@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import TiltedCard from "./TiltedCard";
+import CircularGallery from "./CircularGallery";
 import VariableProximity from "./VariableProximity";
 
 function AnimatedCounter({
@@ -63,8 +63,7 @@ export function Hero() {
   const statsRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <section id="inicio" className="relative overflow-hidden bg-[#111111] text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(245,200,76,0.25),transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(245,200,76,0.1),transparent_25%)]" />
+    <section id="inicio" className="relative overflow-hidden bg-transparent text-white">
       <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-14 sm:gap-12 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-24">
         <div className="animate-fade-up">
           <span className="inline-flex rounded-full border border-yellow-400/40 bg-yellow-400/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-yellow-300 sm:px-4 sm:text-[11px]">
@@ -109,51 +108,25 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[420px]">
-          <TiltedCard
-            imageSrc="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=900&q=80"
-            altText="Herramientas YAWELMAQ"
-            captionText="YAWELMAQ"
-            containerHeight="310px"
-            containerWidth="100%"
-            imageHeight="310px"
-            imageWidth="100%"
-            rotateAmplitude={10}
-            scaleOnHover={1.03}
-            showMobileWarning={false}
-            showTooltip={false}
-            displayOverlayContent
-            overlayContent={
-              <div className="flex h-full w-full flex-col justify-between rounded-[15px] bg-gradient-to-br from-[#111111]/80 via-[#111111]/70 to-[#f5c84c]/20 p-5 text-white backdrop-blur-sm">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em]">
-                    YAWELMAQ
-                  </span>
-                  <span className="rounded-full bg-yellow-400 px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-black">
-                    Calidad
-                  </span>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-yellow-300/30 bg-[#171717]/80 p-3">
-                    <div className="mb-2 text-2xl">🛠️</div>
-                    <p className="text-xs text-slate-200">Herramientas</p>
-                    <p className="mt-1 text-lg font-bold">Profesionales</p>
-                  </div>
-                  <div className="rounded-2xl border border-yellow-300/30 bg-[#171717]/80 p-3">
-                    <div className="mb-2 text-2xl">🏗️</div>
-                    <p className="text-xs text-slate-200">Materiales</p>
-                    <p className="mt-1 text-lg font-bold">De obra</p>
-                  </div>
-                  <div className="rounded-2xl border border-yellow-300/30 bg-[#171717]/80 p-3 sm:col-span-2">
-                    <div className="mb-2 text-2xl">🚚</div>
-                    <p className="text-xs text-slate-200">Entrega y asesoría</p>
-                    <p className="mt-1 text-lg font-bold">Rápida y confiable</p>
-                  </div>
-                </div>
-              </div>
-            }
-          />
+        <div className="relative mx-auto w-full max-w-[520px]">
+          <div className="h-[310px] w-full overflow-hidden rounded-[22px] border border-yellow-200/80 bg-[#111111]/60 shadow-[0_25px_80px_rgba(17,17,17,0.18)] ring-1 ring-yellow-300/20 backdrop-blur-[2px] sm:h-[360px] lg:h-[500px]">
+            <CircularGallery
+              items={[
+                { image: "https://images.unsplash.com/photo-1581147036324-c17ac5f7d3d2?auto=format&fit=crop&w=900&q=80", text: "Taladros" },
+                { image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=80", text: "Sierras" },
+                { image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=900&q=80", text: "Accesorios" },
+                { image: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=900&q=80", text: "Herramientas" },
+                { image: "https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?auto=format&fit=crop&w=900&q=80", text: "Ferretería" },
+                { image: "https://images.unsplash.com/photo-1590793892454-8d1d0e7a4fbe?auto=format&fit=crop&w=900&q=80", text: "Electricidad" },
+              ]}
+              bend={3}
+              textColor="#ffffff"
+              borderRadius={0.05}
+              scrollEase={0.02}
+              fontUrl="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap"
+              font="bold 30px Orbitron"
+            />
+          </div>
         </div>
       </div>
     </section>

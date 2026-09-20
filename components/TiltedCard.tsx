@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 
 const springValues = {
@@ -53,8 +53,19 @@ export default function TiltedCard({
   });
 
   const [lastY, setLastY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function update() {
+      setIsMobile(typeof window !== "undefined" && window.innerWidth < 640);
+    }
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   function handleMouse(e: React.MouseEvent<HTMLDivElement>) {
+    if (isMobile) return;
     if (!ref.current) return;
 
     const rect = ref.current.getBoundingClientRect();
@@ -76,11 +87,13 @@ export default function TiltedCard({
   }
 
   function handleMouseEnter() {
+    if (isMobile) return;
     scale.set(scaleOnHover);
     opacity.set(1);
   }
 
   function handleMouseLeave() {
+    if (isMobile) return;
     opacity.set(0);
     scale.set(1);
     rotateX.set(0);

@@ -1,8 +1,8 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { CategoryGrid } from "@/components/CategoryGrid";
-import { ContactCTA } from "@/components/ContactCTA";
 import { Footer } from "@/components/Footer";
+import TiltedCard from "@/components/TiltedCard";
 import CircularGallery from "@/components/CircularGallery";
 import "@/components/CircularGallery.css";
 
@@ -35,31 +35,56 @@ const productItems = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="min-h-screen bg-transparent text-white">
       <Navbar />
       <Hero />
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-        <div className="mb-8 text-center sm:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-yellow-400 sm:text-sm">Productos</p>
-          <h3 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl lg:text-4xl">Selección destacada</h3>
-        </div>
-        <div className="h-[320px] w-full overflow-hidden rounded-[24px] border border-yellow-200 bg-[#111111] shadow-[0_25px_80px_rgba(17,17,17,0.18)] sm:h-[380px] lg:h-[500px]">
-          <CircularGallery
-            items={productItems}
-            bend={3}
-            textColor="#ffffff"
-            borderRadius={0.05}
-            scrollEase={0.02}
-            fontUrl="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap"
-            font="bold 30px Orbitron"
-          />
-        </div>
-      </section>
-
       <CategoryGrid />
-      <ContactCTA />
-      <Footer />
+
+      <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="space-y-6">
+          <div className="flex items-center justify-center">
+            <div className="w-full max-w-[560px]">
+              <TiltedCard
+                imageSrc="/pandita.jpeg"
+                altText="Pandita"
+                captionText=""
+                containerHeight="310px"
+                containerWidth="100%"
+                imageHeight="310px"
+                imageWidth="100%"
+                rotateAmplitude={18}
+                scaleOnHover={1.04}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent
+                overlayContent={
+                  <div className="absolute inset-0 grid grid-cols-[1.5fr_0.5fr] sm:grid-cols-[1.55fr_0.45fr]">
+                    <div className="overflow-hidden rounded-l-[15px] bg-[#070707]">
+                      <div className="h-full w-full translate-y-1 sm:translate-y-2">
+                        <img
+                          src="/pandita.jpeg"
+                          alt="Pandita"
+                          className="h-full w-full object-contain object-bottom select-none"
+                          draggable="false"
+                          style={{ userSelect: "none", WebkitUserSelect: "none" }}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center border-l border-yellow-300/25 bg-[#090909] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]">
+                      <div className="flex h-[170px] w-[170px] items-center justify-center rounded-[20px] border border-dashed border-yellow-300/45 bg-[#0b0b0b] text-[10px] font-black uppercase tracking-[0.22em] text-yellow-200/80 shadow-[0_0_30px_rgba(255,196,0,0.08)] sm:h-[210px] sm:w-[210px]">
+                        QR
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+          </div>
+
+          <Footer />
+        </div>
+      </div>
     </main>
   );
 }
