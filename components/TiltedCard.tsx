@@ -1,12 +1,18 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 
+/**
+ * Tarjeta 3D reutilizable (Motion).
+ * - Rota con el mouse; en < 640px el tilt se apaga.
+ * - `showImage={false}` deja solo el overlay (sirve para la tarjeta del QR).
+ * - `imageClassName` controla recorte: object-cover evita que la foto se encoja.
+ */
 const springValues = {
-  damping: 30,
-  stiffness: 100,
-  mass: 2,
+  damping: 50,
+  stiffness: 80,
+  mass: 4,
 };
 
 export default function TiltedCard({
@@ -18,13 +24,16 @@ export default function TiltedCard({
   imageHeight = "300px",
   imageWidth = "300px",
   scaleOnHover = 1.1,
-  rotateAmplitude = 14,
+  rotateAmplitude = 4,
   showMobileWarning = true,
   showTooltip = true,
   overlayContent = null,
   displayOverlayContent = false,
+  showImage = true,
+  imageClassName = "tilted-card-img",
+  className = "",
 }: {
-  imageSrc: string;
+  imageSrc?: string;
   altText?: string;
   captionText?: string;
   containerHeight?: string;
@@ -37,6 +46,10 @@ export default function TiltedCard({
   showTooltip?: boolean;
   overlayContent?: React.ReactNode;
   displayOverlayContent?: boolean;
+  /** Si es false, no pinta la foto de fondo (la tarjeta QR no la necesita). */
+  showImage?: boolean;
+  imageClassName?: string;
+  className?: string;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -53,19 +66,9 @@ export default function TiltedCard({
   });
 
   const [lastY, setLastY] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    function update() {
-      setIsMobile(typeof window !== "undefined" && window.innerWidth < 640);
-    }
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
+  // Distancia del mouse al centro → rotación X/Y (funciona en cualquier resolución).
   function handleMouse(e: React.MouseEvent<HTMLDivElement>) {
-    if (isMobile) return;
     if (!ref.current) return;
 
     const rect = ref.current.getBoundingClientRect();
@@ -82,18 +85,48 @@ export default function TiltedCard({
     y.set(e.clientY - rect.top);
 
     const velocityY = offsetY - lastY;
-    rotateFigcaption.set(-velocityY * 0.6);
+    rotateFigcaption.set(-velocityY * 0.2);
     setLastY(offsetY);
   }
 
   function handleMouseEnter() {
-    if (isMobile) return;
     scale.set(scaleOnHover);
     opacity.set(1);
   }
 
   function handleMouseLeave() {
-    if (isMobile) return;
+    opacity.set(0);
+    scale.set(1);
+    rotateX.set(0);
+    rotateY.set(0);
+    rotateFigcaption.set(0);
+  }
+
+  // Soporte para interacción táctil en pantallas móviles
+  function handleTouchMove(e: React.TouchEvent<HTMLDivElement>) {
+    if (!ref.current || !e.touches[0]) return;
+
+    const touch = e.touches[0];
+    const rect = ref.current.getBoundingClientRect();
+    const offsetX = touch.clientX - rect.left - rect.width / 2;
+    const offsetY = touch.clientY - rect.top - rect.height / 2;
+
+    const rotationX = (offsetY / (rect.height / 2)) * -rotateAmplitude;
+    const rotationY = (offsetX / (rect.width / 2)) * rotateAmplitude;
+
+    rotateX.set(rotationX);
+    rotateY.set(rotationY);
+
+    x.set(touch.clientX - rect.left);
+    y.set(touch.clientY - rect.top);
+  }
+
+  function handleTouchStart() {
+    scale.set(scaleOnHover);
+    opacity.set(1);
+  }
+
+  function handleTouchEnd() {
     opacity.set(0);
     scale.set(1);
     rotateX.set(0);
@@ -104,7 +137,7 @@ export default function TiltedCard({
   return (
     <figure
       ref={ref}
-      className="tilted-card-figure"
+      className={`tilted-card-figure ${className}`.trim()}
       style={{
         height: containerHeight,
         width: containerWidth,
@@ -112,31 +145,42 @@ export default function TiltedCard({
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchMove={handleTouchMove}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
     >
       {showMobileWarning && (
         <div className="tilted-card-mobile-alert">This effect is not optimized for mobile. Check on desktop.</div>
       )}
 
       <motion.div
-        className="tilted-card-inner"
+        className="tilted-card-inner overflow-hidden rounded-[15px]"
         style={{
           width: "100%",
           maxWidth: imageWidth,
           height: imageHeight,
+          borderRadius: "15px",
+          overflow: "hidden",
           rotateX,
           rotateY,
           scale,
         }}
       >
-        <motion.img
-          src={imageSrc}
-          alt={altText}
-          className="tilted-card-img"
-          style={{
-            width: "100%",
-            height: imageHeight,
-          }}
-        />
+        {showImage && imageSrc ? (
+          <motion.img
+            src={imageSrc}
+            alt={altText}
+            className={`${imageClassName} rounded-[15px] object-cover`}
+            draggable={false}
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "15px",
+              objectFit: "cover",
+            }}
+          />
+        ) : null}
 
         {displayOverlayContent && overlayContent && <motion.div className="tilted-card-overlay">{overlayContent}</motion.div>}
       </motion.div>

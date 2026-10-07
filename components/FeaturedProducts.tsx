@@ -1,3 +1,4 @@
+/** Sección no montada en page.tsx; se puede reusar o borrar. */
 const featuredProducts = [
   { title: "Taladros y sierras", description: "Potencia, precisión y durabilidad para cada trabajo.", tag: "Herramienta" },
   { title: "Cemento y materiales", description: "Base sólida para construcción y remodelación eficiente.", tag: "Obra" },

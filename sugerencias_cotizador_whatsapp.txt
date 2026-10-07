@@ -1,0 +1,53 @@
+================================================================================
+SUGERENCIA PENDIENTE: COTIZADOR MULTI-PRODUCTO POR WHATSAPP (CARRITO DE COTIZACIÓN)
+Proyecto: Ferretería YAWELMAQ
+Fecha: 2026-09-24
+================================================================================
+
+1. CONCEPTO GENERAL
+--------------------------------------------------------------------------------
+Permitir que el cliente seleccione ("check" o "añadir") múltiples productos 
+a lo largo de las distintas categorías de la tienda, y que al final pueda 
+solicitar la cotización de toda la lista en un único mensaje de WhatsApp 
+hacia la dueña del negocio.
+
+
+2. COMPORTAMIENTO DE LA INTERFAZ (UI / UX)
+--------------------------------------------------------------------------------
+A) En cada tarjeta de producto:
+   - Reemplazar o complementar el botón actual con:
+     [ + Añadir a cotización ] o un botón que cambie a [ ✓ Seleccionado ]
+     (con estilo resaltado en amarillo/dorado cuando esté activo).
+
+B) Botón o Barra flotante separada (Floating Dock / Bottom Bar):
+   - Aparece suavemente en la parte inferior de la pantalla únicamente cuando 
+     el cliente ha marcado al menos 1 producto.
+   - Contenido visible de la barra:
+     * Contador: "Has seleccionado X productos"
+     * Botón principal: [ Cotizar lista por WhatsApp (X) 📲 ]
+     * (Opcional): Botón para vaciar o revisar la lista.
+   - La barra acompaña al usuario en el scroll y persiste entre categorías 
+     (usando React Context o LocalStorage).
+
+
+3. FORMATO DEL MENSAJE AUTOMÁTICO EN WHATSAPP
+--------------------------------------------------------------------------------
+Al hacer clic en el botón flotante, se abre WhatsApp con el mensaje prellenado:
+
+"¡Hola YAWELMAQ! 👋 Deseo cotizar la disponibilidad y precio de los siguientes productos:
+
+1. Taladro Percutor Pro 18V (Código: TL-101)
+2. Disco de Corte (Código: AC-301)
+3. Broca de Concreto (Código: AC-304)
+
+¿Me podrían confirmar el costo total y si cuentan con entrega? ¡Muchas gracias!"
+
+
+4. BENEFICIOS CLAVE
+--------------------------------------------------------------------------------
+- Para el cliente: Cero fricción; no tiene que enviar 4 o 5 mensajes sueltos.
+- Para la dueña: Recibe pedidos consolidados con códigos de inventario exactos, 
+  ahorrando tiempo al calcular el presupuesto.
+- Conversión: Mayor ticket de venta al facilitar que el cliente añada accesorios 
+  y consumibles junto a su herramienta principal.
+================================================================================

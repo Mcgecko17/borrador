@@ -18,6 +18,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Configuración de Supabase
+
+1. Copiá `.env.example` como `.env.local`.
+2. Completá `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` con los datos del proyecto de Supabase.
+3. Si las imágenes usan otra URL de Storage, completá también `NEXT_PUBLIC_SUPABASE_STORAGE_URL`.
+4. Para compilar o desplegar en GitHub Actions, Vercel u otro proveedor, cargá esas variables en la configuración de secretos/variables del proveedor. `.env.local` no se sube a GitHub.
+
+`SUPABASE_SECRET_KEY` es opcional y solo debe configurarse como variable privada del servidor; nunca la publiques ni uses el prefijo `NEXT_PUBLIC_` para esa clave.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More

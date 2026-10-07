@@ -3,6 +3,8 @@
 import { forwardRef, useEffect, useMemo, useRef, type CSSProperties, type MouseEventHandler } from "react";
 import { motion } from "motion/react";
 
+/** Cada letra interpola wght/opsz según la distancia al cursor. */
+
 function useAnimationFrame(callback: () => void) {
   useEffect(() => {
     let frameId = 0;

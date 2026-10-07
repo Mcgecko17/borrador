@@ -4,13 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import CircularGallery from "./CircularGallery";
 import VariableProximity from "./VariableProximity";
 
+/** Cuenta de 0 al valor con easing; cada dígito reacciona al cursor (VariableProximity). */
 function AnimatedCounter({
   value,
+  prefix = "",
   suffix = "",
   duration = 1400,
   className,
 }: {
   value: number;
+  prefix?: string;
   suffix?: string;
   duration?: number;
   className?: string;
@@ -37,7 +40,7 @@ function AnimatedCounter({
     return () => cancelAnimationFrame(frame);
   }, [value, duration]);
 
-  const displayValue = `${count}${suffix}`;
+  const displayValue = `${prefix}${count}${suffix}`;
 
   return (
     <div
@@ -59,32 +62,54 @@ function AnimatedCounter({
   );
 }
 
-export function Hero() {
+export interface HeroProps {
+  totalItems?: number;
+  totalMarcas?: number;
+  galleryItems?: { image: string; text: string }[];
+}
+
+/** Bloque principal del home: copy + CTAs + stats + carrusel WebGL. */
+export function Hero({
+  totalItems = 200,
+  totalMarcas = 12,
+  galleryItems,
+}: HeroProps) {
   const statsRef = useRef<HTMLDivElement | null>(null);
+
+  const defaultGalleryItems = [
+    { image: "https://images.unsplash.com/photo-1581147036324-c17ac5f7d3d2?auto=format&fit=crop&w=900&q=80", text: "" },
+    { image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=80", text: "" },
+    { image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=900&q=80", text: "" },
+    { image: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=900&q=80", text: "" },
+    { image: "https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?auto=format&fit=crop&w=900&q=80", text: "" },
+    { image: "https://images.unsplash.com/photo-1590793892454-8d1d0e7a4fbe?auto=format&fit=crop&w=900&q=80", text: "" },
+  ];
+
+  const itemsToRender = galleryItems && galleryItems.length > 0 ? galleryItems : defaultGalleryItems;
 
   return (
     <section id="inicio" className="relative overflow-hidden bg-transparent text-white">
       <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-14 sm:gap-12 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-24">
         <div className="animate-fade-up">
           <span className="inline-flex rounded-full border border-yellow-400/40 bg-yellow-400/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-yellow-300 sm:px-4 sm:text-[11px]">
-            Catálogo profesional • +200 herramientas
+            Catálogo profesional • +{totalItems} herramientas
           </span>
           <h2 className="mt-6 max-w-xl text-3xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
             Todo para trabajar duro, seguro y bien hecho.
           </h2>
           <p className="mt-5 max-w-xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
-            En YAWELMAQ encontrarás herramientas, accesorios y materiales para construcción, mantenimiento y obra, organizados por categoría para que elijas rápido y con confianza.
+            En YAWELMAQ encontrarás herramientas, accesorios y maquinaria para construcción, mantenimiento y obra, organizados por marca para que elijas rápido y con confianza.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <a
-              href="#categorias"
+              href="#marcas"
               className="touch-lift w-full rounded-full bg-yellow-400 px-5 py-3 text-center text-sm font-black text-black transition hover:bg-yellow-300 active:scale-[0.98] sm:w-auto"
             >
-              Ver catálogo
+              Ver marcas
             </a>
             <a
-              href="#categorias"
+              href="#beneficios"
               className="touch-lift w-full rounded-full border border-yellow-400/40 bg-transparent px-5 py-3 text-center text-sm font-semibold text-yellow-200 transition hover:bg-yellow-400/10 active:scale-[0.98] sm:w-auto"
             >
               ¿Por qué YAWELMAQ?
@@ -94,15 +119,15 @@ export function Hero() {
           <div ref={statsRef} className="mt-10 grid max-w-xl gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-yellow-400/20 bg-white/5 p-4 shadow-sm transition-all duration-300 hover:border-yellow-300/60 hover:bg-yellow-400/5">
               <div className="relative">
-                <AnimatedCounter value={200} suffix="+" className="variable-proximity-stat" />
+                <AnimatedCounter value={totalItems} prefix="+" className="variable-proximity-stat" />
                 <span className="mt-1 block text-sm text-slate-300">Herramientas</span>
               </div>
             </div>
 
             <div className="rounded-2xl border border-yellow-400/20 bg-white/5 p-4 shadow-sm transition-all duration-300 hover:border-yellow-300/60 hover:bg-yellow-400/5">
               <div className="relative">
-                <AnimatedCounter value={12} className="variable-proximity-stat" />
-                <span className="mt-1 block text-sm text-slate-300">Categorías</span>
+                <AnimatedCounter value={totalMarcas} className="variable-proximity-stat" />
+                <span className="mt-1 block text-sm text-slate-300">Marcas</span>
               </div>
             </div>
           </div>
@@ -111,14 +136,7 @@ export function Hero() {
         <div className="relative mx-auto w-full max-w-[520px]">
           <div className="h-[310px] w-full overflow-hidden rounded-[22px] border border-yellow-200/80 bg-[#111111]/60 shadow-[0_25px_80px_rgba(17,17,17,0.18)] ring-1 ring-yellow-300/20 backdrop-blur-[2px] sm:h-[360px] lg:h-[500px]">
             <CircularGallery
-              items={[
-                { image: "https://images.unsplash.com/photo-1581147036324-c17ac5f7d3d2?auto=format&fit=crop&w=900&q=80", text: "Taladros" },
-                { image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=80", text: "Sierras" },
-                { image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=900&q=80", text: "Accesorios" },
-                { image: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=900&q=80", text: "Herramientas" },
-                { image: "https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?auto=format&fit=crop&w=900&q=80", text: "Ferretería" },
-                { image: "https://images.unsplash.com/photo-1590793892454-8d1d0e7a4fbe?auto=format&fit=crop&w=900&q=80", text: "Electricidad" },
-              ]}
+              items={itemsToRender}
               bend={3}
               textColor="#ffffff"
               borderRadius={0.05}

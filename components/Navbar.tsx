@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+/** Cabecera fija. En móvil oculta los enlaces y deja logo + horario. */
 export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-yellow-300/60 bg-[#111111]/90 text-yellow-400 backdrop-blur-md">
@@ -13,9 +14,10 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-yellow-50/80 md:flex">
+          {/* Anclas: coinciden con id="inicio", id="marcas", id="contacto" */}
           <Link href="/#inicio" className="transition hover:text-yellow-300">Inicio</Link>
-          <Link href="/#categorias" className="transition hover:text-yellow-300">Categorías</Link>
-          <Link href="/#contacto" className="transition hover:text-yellow-300">Contacto</Link>
+          <Link href="/#marcas" className="transition hover:text-yellow-300">Categorías</Link>
+          <Link href="/#pandita-card" className="transition hover:text-yellow-300">Contacto</Link>
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">

@@ -2,6 +2,12 @@
 
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from "ogl";
 import { useEffect, useRef } from "react";
+import "./CircularGallery.css";
+
+/**
+ * Carrusel WebGL (OGL): planos en arco infinito.
+ * App = escena + input. Media = cada tarjeta. Title = texto como textura.
+ */
 
 function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
   let timeout: ReturnType<typeof setTimeout> | undefined;

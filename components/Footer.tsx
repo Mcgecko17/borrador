@@ -1,8 +1,9 @@
 import Link from "next/link";
 
+/** Pie con ancla #contacto (la usa el menú). */
 export function Footer() {
   return (
-    <footer id="contacto" className="border-t border-yellow-300/20 bg-[#0d0d0d]/90 py-8 text-slate-300 shadow-[0_-10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm">
+    <footer className="border-t border-yellow-300/20 bg-[#0d0d0d]/90 py-8 text-slate-300 shadow-[0_-10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-6 text-center text-sm lg:flex-row lg:px-8 lg:text-left">
         <div className="flex items-center gap-3">
           <img src="/uwu.svg" alt="YAWELMAQ" className="h-10 w-10 rounded-xl object-contain" />
@@ -12,9 +13,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex gap-5 text-yellow-300">
+        <div className="flex flex-wrap justify-center gap-5 text-yellow-300 text-xs sm:text-sm">
           <Link href="/#inicio" className="transition hover:text-yellow-200">Inicio</Link>
           <Link href="/#categorias" className="transition hover:text-yellow-200">Categorías</Link>
+          <Link href="/#beneficios" className="transition hover:text-yellow-200">Beneficios</Link>
           <Link href="/#contacto" className="transition hover:text-yellow-200">Contacto</Link>
         </div>
       </div>
