@@ -55,6 +55,7 @@ export default async function CategoryPage({
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5 sm:hidden">
+              
               <Link
                 href="/catalogo"
                 className="inline-flex w-fit items-center justify-center rounded-full border border-yellow-300/30 bg-white/5 px-4 py-2 text-xs font-bold text-yellow-200 transition hover:bg-yellow-400/10"

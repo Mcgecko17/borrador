@@ -36,7 +36,7 @@ export const STORAGE_BASE_URL =
 /** Devuelve la URL de la imagen del producto según su código en Supabase Storage */
 export function getProductImageUrl(codigo: string): string {
   if (!codigo) return "/wallpaperflare.com_wallpaper.jpg";
-  return `${STORAGE_BASE_URL}/${codigo.trim()}.jpg`;
+  return `${STORAGE_BASE_URL}/${codigo.trim()}.webp`;
 }
 
 /** Devuelve la URL del logo/foto de la marca en Supabase Storage */
@@ -65,6 +65,9 @@ export async function getProductos(): Promise<ProductoDB[]> {
   }
 }
 
+// Nombres de marca que se ignoran (datos basura / sin clasificar)
+const MARCAS_IGNORADAS = ["no identificada", "sin marca", "n/a", "otro", "otros", "oyüstoffs"];
+
 /** Agrupa los productos por marca y devuelve la información de cada marca */
 export async function getMarcas(): Promise<MarcaInfo[]> {
   const productos = await getProductos();
@@ -74,6 +77,10 @@ export async function getMarcas(): Promise<MarcaInfo[]> {
   for (const prod of productos) {
     const rawBrand = prod.marca_producto?.trim();
     if (!rawBrand) continue;
+
+    // Ignorar marcas basura / sin clasificar
+    if (MARCAS_IGNORADAS.includes(rawBrand.toLowerCase())) continue;
+
     const brandName = rawBrand.charAt(0).toUpperCase() + rawBrand.slice(1);
     if (!marcasMap.has(brandName)) {
       marcasMap.set(brandName, []);

@@ -5,7 +5,7 @@ import { CategoryGrid } from "@/components/CategoryGrid";
 import { BenefitsSection } from "@/components/BenefitsSection";
 import { Footer } from "@/components/Footer";
 import TiltedCard from "@/components/TiltedCard";
-import { getProductos, getMarcas, getProductImageUrl } from "@/lib/supabase";
+import { getProductos, getMarcas } from "@/lib/supabase";
 
 export const revalidate = 30;
 
@@ -21,24 +21,12 @@ const cardTilt = {
 export default async function Home() {
   const [productos, marcas] = await Promise.all([getProductos(), getMarcas()]);
 
-  // Galería de imágenes de productos de la base de datos (solo imágenes, sin texto)
-  const baseGallery = productos.map((p) => ({
-    image: getProductImageUrl(p.codigo_producto),
-    text: "",
-  }));
-
-  const galleryItems =
-    baseGallery.length > 0 && baseGallery.length < 6
-      ? [...baseGallery, ...baseGallery]
-      : baseGallery;
-
   return (
     <main className="min-h-screen bg-transparent text-white">
       <Navbar />
       <Hero
         totalItems={productos.length}
         totalMarcas={marcas.length}
-        galleryItems={galleryItems}
       />
       <CategoryGrid marcas={marcas} />
       <BenefitsSection />
@@ -162,7 +150,7 @@ export default async function Home() {
                     </div>
                     {/* Botón WhatsApp */}
                     <a
-                      href="https://wa.me/"
+                      href="https://wa.me/59175921002"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-yellow-400 py-2.5 text-xs font-black uppercase tracking-wider text-black transition hover:bg-yellow-300 active:scale-[0.98]"
