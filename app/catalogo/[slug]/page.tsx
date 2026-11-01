@@ -33,10 +33,10 @@ export default async function CategoryPage({
 
   if (marcaData) {
     return (
-      <main className="min-h-screen bg-transparent text-white">
+      <main className="min-h-screen bg-transparent text-white flex flex-col">
         <Navbar />
 
-        <section className="mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+        <section className="mx-auto w-full max-w-7xl flex-1 px-4 pb-10 pt-8 sm:px-6 lg:px-8 lg:pt-12">
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-yellow-300/20 pb-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-yellow-400">
@@ -151,10 +151,10 @@ export default async function CategoryPage({
   }
 
   return (
-    <main className="min-h-screen bg-transparent text-white">
+    <main className="min-h-screen bg-transparent text-white flex flex-col">
       <Navbar />
 
-      <section className="mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+      <section className="mx-auto w-full max-w-7xl flex-1 px-4 pb-10 pt-8 sm:px-6 lg:px-8 lg:pt-12">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-yellow-300/20 pb-6">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-yellow-400">

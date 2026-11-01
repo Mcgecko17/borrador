@@ -65,8 +65,35 @@ export async function getProductos(): Promise<ProductoDB[]> {
   }
 }
 
-// Nombres de marca que se ignoran (datos basura / sin clasificar)
-const MARCAS_IGNORADAS = ["no identificada", "sin marca", "n/a", "otro", "otros"];
+/**
+ * Convierte un nombre de marca en un slug URL-safe:
+ * - Normaliza diacríticos (ü→u, á→a, etc.)
+ * - Pasa a minúsculas
+ * - Reemplaza espacios y caracteres no-alfanuméricos por "-"
+ * - Limpia guiones al inicio/fin
+ */
+export function toSlug(name: string): string {
+  return name
+    .normalize("NFD")                      // descompone diacríticos: "ü" → "u" + combinador
+    .replace(/[\u0300-\u036f]/g, "")       // elimina los combinadores diacríticos
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")           // cualquier carácter no-alfanumérico → "-"
+    .replace(/^-+|-+$/g, "");             // quita guiones al inicio/fin
+}
+
+/**
+ * Regex que detecta nombres de marca que son datos basura o placeholders genéricos.
+ * Captura variantes como: "sin marca", "no identificada", "n/a", "otro/s",
+ * "desconocido", "ninguno", cadenas de 1 carácter, etc.
+ * No requiere mantener una lista manual de marcas específicas.
+ */
+const MARCA_INVALIDA_RE =
+  /^(sin[\s_-]*marca|no[\s_-]*identific\w*|n\/?a|otros?|desconocid\w*|ninguno|indefinid\w*|vari\w*|gen[eé]rico|unknown|none|null|-)$|^.{1}$/i;
+
+/** Devuelve true si el nombre de marca debe ser ignorado */
+function esMarcaInvalida(nombre: string): boolean {
+  return MARCA_INVALIDA_RE.test(nombre.trim());
+}
 
 /** Agrupa los productos por marca y devuelve la información de cada marca */
 export async function getMarcas(): Promise<MarcaInfo[]> {
@@ -78,8 +105,8 @@ export async function getMarcas(): Promise<MarcaInfo[]> {
     const rawBrand = prod.marca_producto?.trim();
     if (!rawBrand) continue;
 
-    // Ignorar marcas basura / sin clasificar
-    if (MARCAS_IGNORADAS.includes(rawBrand.toLowerCase())) continue;
+    // Ignorar marcas que sean datos basura o placeholders genéricos
+    if (esMarcaInvalida(rawBrand)) continue;
 
     const brandName = rawBrand.charAt(0).toUpperCase() + rawBrand.slice(1);
     if (!marcasMap.has(brandName)) {
@@ -93,7 +120,7 @@ export async function getMarcas(): Promise<MarcaInfo[]> {
   for (const [name, prods] of marcasMap.entries()) {
     marcas.push({
       name,
-      slug: name.toLowerCase().replace(/\s+/g, "-"),
+      slug: toSlug(name),
       productCount: prods.length,
       imageUrl: getBrandImageUrl(name),
       products: prods,
@@ -109,7 +136,7 @@ export async function getProductosByMarcaSlug(slug: string): Promise<{
   products: ProductoDB[];
 } | null> {
   const marcas = await getMarcas();
-  const cleanSlug = slug.toLowerCase().trim();
+  const cleanSlug = toSlug(slug);
   const found = marcas.find((m) => m.slug === cleanSlug);
 
   if (!found) return null;
