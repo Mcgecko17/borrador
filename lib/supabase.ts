@@ -66,7 +66,7 @@ export async function getProductos(): Promise<ProductoDB[]> {
 }
 
 // Nombres de marca que se ignoran (datos basura / sin clasificar)
-const MARCAS_IGNORADAS = ["no identificada", "sin marca", "n/a", "otro", "otros", "oyüstoffs"];
+const MARCAS_IGNORADAS = ["no identificada", "sin marca", "n/a", "otro", "otros"];
 
 /** Agrupa los productos por marca y devuelve la información de cada marca */
 export async function getMarcas(): Promise<MarcaInfo[]> {

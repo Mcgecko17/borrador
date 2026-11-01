@@ -118,7 +118,7 @@ export default async function CategoryPage({
                           />
                           {product.stock_producto > 0
                             ? `Stock disponible (${product.stock_producto} unid.)`
-                            : "Bajo pedido"}
+                            : "Consultar disponibilidad"}
                         </span>
                       </div>
                       <a
@@ -212,7 +212,7 @@ export default async function CategoryPage({
                 <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
                   <div>
                     <span className="text-[11px] font-bold uppercase tracking-wider text-yellow-300/80">
-                      {product.inStock !== false ? "Stock en tienda" : "Bajo pedido"}
+                      {product.inStock !== false ? "Stock en tienda" : "Consultar disponibilidad"}
                     </span>
                   </div>
 
