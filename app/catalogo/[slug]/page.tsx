@@ -6,7 +6,7 @@ import { BrandCardImage } from "@/components/BrandCardImage";
 import { getProductosByMarcaSlug, getProductImageUrl, getMarcas } from "@/lib/supabase";
 import { categories } from "../../catalogo-data";
 
-export const revalidate = 30;
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   try {

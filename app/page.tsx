@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import TiltedCard from "@/components/TiltedCard";
 import { getProductos, getMarcas } from "@/lib/supabase";
 
-export const revalidate = 30;
+export const revalidate = 0;
 
 /** Mismos valores de tilt para las dos tarjetas (pandita y QR). */
 const cardTilt = {

@@ -4,14 +4,9 @@ import { useState } from "react";
 
 const LOCAL_FALLBACK = "/wallpaperflare.com_wallpaper.jpg";
 
-function getJpgVariant(url: string): string | null {
-  if (url.endsWith(".webp")) return url.slice(0, -5) + ".jpg";
-  if (url.endsWith(".jpg")) return url.slice(0, -4) + ".webp";
-  return null;
-}
-
 export function BrandCardImage({
   src,
+  fallbackSrc,
   alt,
 }: {
   src: string;
@@ -19,24 +14,21 @@ export function BrandCardImage({
   alt: string;
 }) {
   const [imgSrc, setImgSrc] = useState(src);
-  const [triedAlt, setTriedAlt] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   return (
     <img
       src={imgSrc}
       alt={alt}
       onError={() => {
-        if (!triedAlt) {
-          // Intentar con la extensión alternativa (.webp ↔ .jpg)
-          const alt = getJpgVariant(imgSrc);
-          if (alt) {
-            setTriedAlt(true);
-            setImgSrc(alt);
-            return;
-          }
+        if (!failed) {
+          setFailed(true);
+          // Usar la imagen del primer producto de la marca, o el fallback genérico
+          setImgSrc(fallbackSrc || LOCAL_FALLBACK);
+        } else {
+          // Si también falla el fallbackSrc, usar imagen genérica local
+          setImgSrc(LOCAL_FALLBACK);
         }
-        // Si todo falla, usar imagen local
-        setImgSrc(LOCAL_FALLBACK);
       }}
       className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
     />

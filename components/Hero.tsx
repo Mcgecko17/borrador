@@ -69,7 +69,7 @@ export interface HeroProps {
 
 /** Bloque principal del home: copy + CTAs + stats. Sin galería para mejor rendimiento. */
 export function Hero({
-  totalItems = 200,
+  totalItems = 0,
   totalMarcas = 12,
 }: HeroProps) {
   const statsRef = useRef<HTMLDivElement | null>(null);

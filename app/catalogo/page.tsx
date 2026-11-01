@@ -10,7 +10,7 @@ export const metadata = {
     "Explora todas las marcas oficiales y herramientas profesionales de ferretería YAWELMAQ.",
 };
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function CatalogoIndexPage() {
   const [marcas, productos] = await Promise.all([getMarcas(), getProductos()]);
